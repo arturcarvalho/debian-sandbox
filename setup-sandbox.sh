@@ -18,7 +18,7 @@ export PATH="/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$PATH"
 
 echo ">> base packages + CLI niceties + SSH server (for Zed/your Mac)"
 pkgs=(build-essential git curl wget ca-certificates gnupg unzip
-      openssh-server ripgrep fd-find fzf jq tmux direnv)
+      openssh-server ripgrep fd-find fzf jq tmux direnv lazygit)
 missing=()
 for p in "${pkgs[@]}"; do dpkg -s "$p" >/dev/null 2>&1 || missing+=("$p"); done
 if ((${#missing[@]})); then
