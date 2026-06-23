@@ -166,6 +166,23 @@ alias ll="eza --time-style 'long-iso' --icons --all --long --header --no-filesiz
 alias c="clear"
 BASHRC_EOF
 
+grep -q 'ssh-agent' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
+# Start ssh-agent and cache key for GitHub pushes
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+  eval "$(ssh-agent -s)" > /dev/null
+fi
+ssh-add -l &>/dev/null || ssh-add ~/.ssh/id_ed25519 2>/dev/null
+BASHRC_EOF
+
+echo ">> SSH config for GitHub"
+mkdir -p "$HOME/.ssh"
+grep -q 'Host github.com' "$HOME/.ssh/config" 2>/dev/null || cat >> "$HOME/.ssh/config" <<'SSH_EOF'
+Host github.com
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_ed25519
+SSH_EOF
+chmod 600 "$HOME/.ssh/config"
+
 echo ">> persist PATH for new login shells"
 # Keep this file SILENT (no echo / banners): Zed's remote server talks over the SSH
 # channel itself, and any startup output corrupts the protocol — it hangs at
