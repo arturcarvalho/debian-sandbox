@@ -18,7 +18,7 @@ export PATH="/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$PATH"
 
 echo ">> base packages + CLI niceties + SSH server (for Zed/your Mac)"
 pkgs=(build-essential git curl wget ca-certificates gnupg unzip
-      openssh-server ripgrep fd-find fzf jq tmux direnv lazygit)
+      openssh-server ripgrep fd-find fzf jq tmux direnv lazygit rsync)
 missing=()
 for p in "${pkgs[@]}"; do dpkg -s "$p" >/dev/null 2>&1 || missing+=("$p"); done
 if ((${#missing[@]})); then
@@ -67,6 +67,13 @@ else
   sudo rm -rf /opt/nvim && sudo tar -C /opt -xzf /tmp/nvim.tgz && rm /tmp/nvim.tgz
   sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
 fi
+
+echo ">> eza (modern ls)"
+have eza || sudo apt-get install -y eza 2>/dev/null || {
+  EZA_VER="$(curl -fsSL https://api.github.com/repos/eza-community/eza/releases/latest | grep '"tag_name"' | cut -d'"' -f4)"
+  curl -fsSL "https://github.com/eza-community/eza/releases/download/${EZA_VER}/eza_x86_64-unknown-linux-gnu.tar.gz" \
+    | sudo tar -C /usr/local/bin -xz eza
+}
 
 echo ">> GitHub CLI (gh)"
 if have gh; then
@@ -137,6 +144,27 @@ have roborev || curl -fsSL https://roborev.io/install.sh | bash   # prebuilt, ch
 #   WantedBy=default.target
 #   UNIT
 #   systemctl --user enable --now roborev
+
+echo ">> Starship prompt"
+if have starship; then
+  echo "   ✓ starship present"
+else
+  curl -sS https://starship.rs/install.sh | sh -s -- --yes
+fi
+# Wire up starship in ~/.bashrc for interactive shells only (guard against double-add):
+grep -q 'starship init bash' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
+# starship — only for interactive shells; Zed's SSH server uses a non-interactive shell
+# so this block is never reached by the protocol process.
+[[ $- == *i* ]] && eval "$(starship init bash)"
+BASHRC_EOF
+
+grep -q '^alias ll=' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
+alias .="cd .."
+alias n="nvim"
+alias g="lazygit"
+alias ll="eza --time-style 'long-iso' --icons --all --long --header --no-filesize --no-permissions --no-user"
+alias c="clear"
+BASHRC_EOF
 
 echo ">> persist PATH for new login shells"
 # Keep this file SILENT (no echo / banners): Zed's remote server talks over the SSH
