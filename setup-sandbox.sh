@@ -18,7 +18,8 @@ export PATH="/usr/local/go/bin:$HOME/go/bin:$HOME/.local/bin:$PATH"
 
 echo ">> base packages + CLI niceties + SSH server (for Zed/your Mac)"
 pkgs=(build-essential git curl wget ca-certificates gnupg unzip
-      openssh-server ripgrep fd-find fzf jq tmux direnv lazygit rsync)
+      openssh-server ripgrep fd-find fzf jq tmux direnv lazygit rsync
+      btop bat)
 missing=()
 for p in "${pkgs[@]}"; do dpkg -s "$p" >/dev/null 2>&1 || missing+=("$p"); done
 if ((${#missing[@]})); then
@@ -145,6 +146,16 @@ have roborev || curl -fsSL https://roborev.io/install.sh | bash   # prebuilt, ch
 #   UNIT
 #   systemctl --user enable --now roborev
 
+echo ">> tmux-resurrect (save/restore sessions)"
+RESURRECT_DIR="$HOME/.tmux/plugins/tmux-resurrect"
+if [ -d "$RESURRECT_DIR" ]; then
+  echo "   ✓ tmux-resurrect present"
+else
+  git clone https://github.com/tmux-plugins/tmux-resurrect "$RESURRECT_DIR"
+fi
+grep -q 'tmux-resurrect' "$HOME/.tmux.conf" 2>/dev/null || \
+  echo "run '~/.tmux/plugins/tmux-resurrect/resurrect.tmux'" >> "$HOME/.tmux.conf"
+
 echo ">> Starship prompt"
 if have starship; then
   echo "   ✓ starship present"
@@ -158,8 +169,10 @@ grep -q 'starship init bash' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashr
 [[ $- == *i* ]] && eval "$(starship init bash)"
 BASHRC_EOF
 
-grep -q '^alias ll=' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
-alias .="cd .."
+grep -q '# sandbox-aliases' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
+# sandbox-aliases
+alias ..="cd .."
+alias bat="batcat"
 alias n="nvim"
 alias g="lazygit"
 alias ll="eza --time-style 'long-iso' --icons --all --long --header --no-filesize --no-permissions --no-user"
