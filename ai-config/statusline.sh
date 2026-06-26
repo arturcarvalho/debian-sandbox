@@ -8,11 +8,20 @@ format_reset() {
 }
 
 minibar() {
-  local remaining=$1 total=5
-  local filled=$(printf '%.0f' "$(echo "$remaining * $total / 100" | bc -l)")
+  local pct=$1 cells=4
+  local levels=("⣀" "⣄" "⣤" "⣦" "⣶" "⣷" "⣿")
   local bar=""
-  for ((i=0; i<total; i++)); do
-    [ $i -lt $filled ] && bar+="▰" || bar+="▱"
+  for ((i=0; i<cells; i++)); do
+    local cell_start=$((i * 100 / cells))
+    local cell_end=$(((i + 1) * 100 / cells))
+    if [ "$pct" -ge "$cell_end" ]; then
+      bar+="⣿"
+    elif [ "$pct" -le "$cell_start" ]; then
+      bar+="⣀"
+    else
+      local idx=$(( (pct - cell_start) * 6 / (100 / cells) ))
+      bar+="${levels[$idx]}"
+    fi
   done
   echo "$bar"
 }
