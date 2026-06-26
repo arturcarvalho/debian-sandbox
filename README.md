@@ -22,6 +22,9 @@ cp ai-config/AGENTS.md ~/AGENTS.md
 cp ai-config/CLAUDE.md ~/.claude/CLAUDE.md
 cp ai-config/settings.json ~/.claude/settings.json
 cp ai-config/statusline.sh ~/.claude/statusline.sh && chmod +x ~/.claude/statusline.sh
+
+# tmux
+cp ai-config/.tmux.conf ~/.tmux.conf
 ```
 
 ## Next steps
