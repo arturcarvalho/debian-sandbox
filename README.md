@@ -12,6 +12,18 @@ Clone repo:
 git clone git@github.com:arturcarvalho/proxmox.git
 ```
 
+## Claude / Codex global config
+
+```bash
+# Shared (Codex reads AGENTS.md from ~/)
+cp ai-config/AGENTS.md ~/AGENTS.md
+
+# Claude only
+cp ai-config/CLAUDE.md ~/.claude/CLAUDE.md
+cp ai-config/settings.json ~/.claude/settings.json
+cp ai-config/statusline.sh ~/.claude/statusline.sh && chmod +x ~/.claude/statusline.sh
+```
+
 ## Next steps
 
 - sudo tailscale up (auth)
