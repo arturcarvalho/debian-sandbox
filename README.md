@@ -25,6 +25,7 @@ cp ai-config/statusline.sh ~/.claude/statusline.sh && chmod +x ~/.claude/statusl
 
 # tmux
 cp ai-config/.tmux.conf ~/.tmux.conf
+mkdir -p ~/.config/lazygit && cp ai-config/lazygit.yml ~/.config/lazygit/config.yml
 ```
 
 ## Next steps
