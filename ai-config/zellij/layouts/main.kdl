@@ -1,0 +1,35 @@
+layout {
+    pane split_direction="vertical" {
+        pane
+    }
+
+    pane size=1 borderless=true {
+        plugin location="file:/home/artur/.config/zellij/plugins/zjstatus.wasm" {
+            format_left  "{mode}{tabs}"
+            format_right "#[fg=#b8bb26,bg=#1d2021]  {command_host}  MEM {command_mem} "
+            format_space "#[bg=#1d2021]"
+
+            mode_normal  "#[bg=#b8bb26,fg=#1d2021,bold]  N #[fg=#b8bb26,bg=#1d2021]"
+            mode_locked  "#[bg=#458588,fg=#1d2021,bold]  L #[fg=#458588,bg=#1d2021]"
+            mode_resize  "#[bg=#d79921,fg=#1d2021,bold]  R #[fg=#d79921,bg=#1d2021]"
+            mode_pane    "#[bg=#d65d0e,fg=#1d2021,bold]  P #[fg=#d65d0e,bg=#1d2021]"
+            mode_tab     "#[bg=#b16286,fg=#1d2021,bold]  T #[fg=#b16286,bg=#1d2021]"
+            mode_scroll  "#[bg=#689d6a,fg=#1d2021,bold]  S #[fg=#689d6a,bg=#1d2021]"
+            mode_search  "#[bg=#689d6a,fg=#1d2021,bold]  / #[fg=#689d6a,bg=#1d2021]"
+            mode_session "#[bg=#cc241d,fg=#1d2021,bold]  M #[fg=#cc241d,bg=#1d2021]"
+
+            tab_normal   "#[fg=#1d2021,bg=#3c3836] #[fg=#a89984,bg=#3c3836]{index}  {name} #[fg=#3c3836,bg=#1d2021]"
+            tab_active   "#[fg=#1d2021,bg=#b8bb26]#[fg=#1d2021,bg=#b8bb26,bold] {index}  {name} #[fg=#b8bb26,bg=#1d2021]"
+
+            command_host_command    "hostname"
+            command_host_format     "{stdout}"
+            command_host_interval   "1"
+            command_host_rendermode "dynamic"
+
+            command_mem_command    "/home/artur/.config/zellij/scripts/mem.sh"
+            command_mem_format     "{stdout}"
+            command_mem_interval   "30"
+            command_mem_rendermode "dynamic"
+        }
+    }
+}

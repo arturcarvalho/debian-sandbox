@@ -170,8 +170,11 @@ mkdir -p "$HOME/.config/zellij/plugins" "$HOME/.config/zellij/layouts"
 [ -f "$HOME/.config/zellij/plugins/zjstatus.wasm" ] || \
   curl -fsSL "https://github.com/dj95/zjstatus/releases/download/${ZJSTATUS_VER}/zjstatus.wasm" \
     -o "$HOME/.config/zellij/plugins/zjstatus.wasm"
-cp "$REPO_DIR/ai-config/zellij/config.kdl"           "$HOME/.config/zellij/config.kdl"
-cp "$REPO_DIR/ai-config/zellij/layouts/default.kdl"  "$HOME/.config/zellij/layouts/default.kdl"
+mkdir -p "$HOME/.config/zellij/layouts" "$HOME/.config/zellij/scripts"
+cp "$REPO_DIR/ai-config/zellij/config.kdl"              "$HOME/.config/zellij/config.kdl"
+cp "$REPO_DIR/ai-config/zellij/layouts/main.kdl"        "$HOME/.config/zellij/layouts/main.kdl"
+cp "$REPO_DIR/ai-config/zellij/scripts/mem.sh"          "$HOME/.config/zellij/scripts/mem.sh"
+chmod +x "$HOME/.config/zellij/scripts/mem.sh"
 
 echo ">> Starship prompt"
 if have starship; then
@@ -193,7 +196,6 @@ alias bat="batcat"
 alias n="nvim"
 alias g="lazygit"
 alias ll="eza --time-style 'long-iso' --icons --all --long --header --no-filesize --no-permissions --no-user"
-alias c="clear"
 BASHRC_EOF
 
 grep -q 'ssh-agent' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
