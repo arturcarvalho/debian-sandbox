@@ -1,0 +1,43 @@
+layout {
+    pane split_direction="vertical" {
+        pane
+    }
+
+    pane size=1 borderless=true {
+        plugin location="file:/home/artur/.config/zellij/plugins/zjstatus.wasm" {
+            // Left: mode indicator → tabs
+            format_left  "{mode}#[fg=#3c3836,bg=#1d2021]{tabs}"
+            format_right "#[fg=#3c3836,bg=#1d2021]#[fg=#a89984,bg=#3c3836]  {command_host}  MEM {command_mem} "
+            format_space "#[bg=#1d2021]"
+
+            hide_frame_for_single_pane "true"
+
+            // Mode indicator — bright green pill on normal, blue on locked
+            mode_normal  "#[bg=#b8bb26,fg=#1d2021,bold]  N #[fg=#b8bb26,bg=#3c3836]"
+            mode_locked  "#[bg=#458588,fg=#1d2021,bold]  L #[fg=#458588,bg=#3c3836]"
+            mode_resize  "#[bg=#d79921,fg=#1d2021,bold]  R #[fg=#d79921,bg=#3c3836]"
+            mode_pane    "#[bg=#d65d0e,fg=#1d2021,bold]  P #[fg=#d65d0e,bg=#3c3836]"
+            mode_tab     "#[bg=#b16286,fg=#1d2021,bold]  T #[fg=#b16286,bg=#3c3836]"
+            mode_scroll  "#[bg=#689d6a,fg=#1d2021,bold]  S #[fg=#689d6a,bg=#3c3836]"
+            mode_search  "#[bg=#689d6a,fg=#1d2021,bold]  / #[fg=#689d6a,bg=#3c3836]"
+            mode_session "#[bg=#cc241d,fg=#1d2021,bold]  M #[fg=#cc241d,bg=#3c3836]"
+
+            // Tabs — inactive: dark gray pill, active: bright green
+            tab_normal   "#[fg=#a89984,bg=#3c3836] {index} {name} #[fg=#3c3836,bg=#1d2021]"
+            tab_active   "#[fg=#3c3836,bg=#b8bb26]#[fg=#1d2021,bg=#b8bb26,bold] {index} {name} #[fg=#b8bb26,bg=#1d2021]"
+
+            // hostname — runs once per minute
+            command_host_command    "hostname"
+            command_host_format     "{stdout}"
+            command_host_interval   "60"
+            command_host_rendermode "static"
+
+            // memory — matches tmux status-right
+            command_mem_command    "sh"
+            command_mem_args       "-c" "free -h | awk '/^Mem:/{print $3\"/\"$2}'"
+            command_mem_format     "{stdout}"
+            command_mem_interval   "5"
+            command_mem_rendermode "static"
+        }
+    }
+}

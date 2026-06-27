@@ -156,6 +156,23 @@ fi
 grep -q 'tmux-resurrect' "$HOME/.tmux.conf" 2>/dev/null || \
   echo "run '~/.tmux/plugins/tmux-resurrect/resurrect.tmux'" >> "$HOME/.tmux.conf"
 
+echo ">> zellij + zjstatus"
+ZELLIJ_VER="v0.44.1"
+ZJSTATUS_VER="v0.23.0"
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if have zellij; then
+  echo "   ✓ zellij present"
+else
+  curl -fsSL "https://github.com/zellij-org/zellij/releases/download/${ZELLIJ_VER}/zellij-x86_64-unknown-linux-musl.tar.gz" \
+    | tar xz -C "$HOME/.local/bin/"
+fi
+mkdir -p "$HOME/.config/zellij/plugins" "$HOME/.config/zellij/layouts"
+[ -f "$HOME/.config/zellij/plugins/zjstatus.wasm" ] || \
+  curl -fsSL "https://github.com/dj95/zjstatus/releases/download/${ZJSTATUS_VER}/zjstatus.wasm" \
+    -o "$HOME/.config/zellij/plugins/zjstatus.wasm"
+cp "$REPO_DIR/ai-config/zellij/config.kdl"           "$HOME/.config/zellij/config.kdl"
+cp "$REPO_DIR/ai-config/zellij/layouts/default.kdl"  "$HOME/.config/zellij/layouts/default.kdl"
+
 echo ">> Starship prompt"
 if have starship; then
   echo "   ✓ starship present"
