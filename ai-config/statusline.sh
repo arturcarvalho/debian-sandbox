@@ -48,8 +48,6 @@ week_used=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // emp
 week_resets=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 [ -n "$week_used" ] && parts+=("$(format_limit "week" "$week_used" "$week_resets")")
 
-cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
-[ -n "$cost" ] && parts+=("$(printf '$%.1f' "$cost")")
 
 if [ ${#parts[@]} -gt 0 ]; then
   output=""

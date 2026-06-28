@@ -213,6 +213,14 @@ fi
 unset _ssh_rc _ssh_env
 BASHRC_EOF
 
+echo ">> Claude Code config (settings + statusline)"
+mkdir -p "$HOME/.claude"
+cp "$REPO_DIR/ai-config/settings.json"   "$HOME/.claude/settings.json"
+cp "$REPO_DIR/ai-config/statusline.sh"   "$HOME/.claude/statusline.sh"
+chmod +x "$HOME/.claude/statusline.sh"
+[ -f "$REPO_DIR/ai-config/CLAUDE.md" ] && cp "$REPO_DIR/ai-config/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+[ -f "$REPO_DIR/ai-config/AGENTS.md" ] && cp "$REPO_DIR/ai-config/AGENTS.md" "$HOME/AGENTS.md"
+
 echo ">> SSH config for GitHub"
 mkdir -p "$HOME/.ssh"
 grep -q 'Host github.com' "$HOME/.ssh/config" 2>/dev/null || cat >> "$HOME/.ssh/config" <<'SSH_EOF'
