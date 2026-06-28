@@ -199,11 +199,18 @@ alias ll="eza --time-style 'long-iso' --icons --all --long --header --no-filesiz
 BASHRC_EOF
 
 grep -q 'ssh-agent' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
-# Start ssh-agent and cache key for GitHub pushes
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-  eval "$(ssh-agent -s)" > /dev/null
+# SSH agent - cache key so passphrase is only entered once per login session
+_ssh_env="$HOME/.ssh/agent.env"
+[ -f "$_ssh_env" ] && source "$_ssh_env" > /dev/null
+ssh-add -l &>/dev/null
+_ssh_rc=$?
+if [ $_ssh_rc -eq 2 ]; then
+  ssh-agent > "$_ssh_env" && chmod 600 "$_ssh_env" && source "$_ssh_env" > /dev/null
+  ssh-add ~/.ssh/id_ed25519
+elif [ $_ssh_rc -eq 1 ]; then
+  ssh-add ~/.ssh/id_ed25519
 fi
-ssh-add -l &>/dev/null || ssh-add ~/.ssh/id_ed25519 2>/dev/null
+unset _ssh_rc _ssh_env
 BASHRC_EOF
 
 echo ">> SSH config for GitHub"
