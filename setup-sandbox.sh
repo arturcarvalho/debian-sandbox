@@ -198,6 +198,20 @@ alias g="lazygit"
 alias ll="eza --time-style 'long-iso' --icons --all --long --header --no-filesize --no-permissions --no-user"
 BASHRC_EOF
 
+grep -q '_notify_preexec' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
+# Zellij bell notification: ring bell (shows [!] on tab) after commands longer than 10s
+_notify_cmd_start=
+_notify_preexec() { _notify_cmd_start=$SECONDS; }
+_notify_precmd() {
+    [[ -z $_notify_cmd_start ]] && return
+    local elapsed=$(( SECONDS - _notify_cmd_start ))
+    _notify_cmd_start=
+    (( elapsed >= 10 )) && printf '\a'
+}
+trap '_notify_preexec' DEBUG
+PROMPT_COMMAND="_notify_precmd${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+BASHRC_EOF
+
 grep -q 'ssh-agent' "$HOME/.bashrc" 2>/dev/null || cat >> "$HOME/.bashrc" <<'BASHRC_EOF'
 # SSH agent - cache key so passphrase is only entered once per login session
 _ssh_env="$HOME/.ssh/agent.env"
