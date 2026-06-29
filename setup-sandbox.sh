@@ -146,25 +146,27 @@ have roborev || curl -fsSL https://roborev.io/install.sh | bash   # prebuilt, ch
 #   UNIT
 #   systemctl --user enable --now roborev
 
+echo ">> roost (config installer)"
+if have roost; then
+  echo "   ✓ roost present"
+else
+  curl -fsSL https://raw.githubusercontent.com/arturcarvalho/roost/main/install.sh | bash
+fi
+
 echo ">> zellij + zjstatus"
 ZELLIJ_VER="v0.44.1"
 ZJSTATUS_VER="v0.23.0"
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if have zellij; then
   echo "   ✓ zellij present"
 else
   curl -fsSL "https://github.com/zellij-org/zellij/releases/download/${ZELLIJ_VER}/zellij-x86_64-unknown-linux-musl.tar.gz" \
     | tar xz -C "$HOME/.local/bin/"
 fi
-mkdir -p "$HOME/.config/zellij/plugins" "$HOME/.config/zellij/layouts"
+mkdir -p "$HOME/.config/zellij/plugins"
 [ -f "$HOME/.config/zellij/plugins/zjstatus.wasm" ] || \
   curl -fsSL "https://github.com/dj95/zjstatus/releases/download/${ZJSTATUS_VER}/zjstatus.wasm" \
     -o "$HOME/.config/zellij/plugins/zjstatus.wasm"
-mkdir -p "$HOME/.config/zellij/layouts" "$HOME/.config/zellij/scripts"
-cp "$REPO_DIR/zellij/config.kdl"              "$HOME/.config/zellij/config.kdl"
-cp "$REPO_DIR/zellij/layouts/main.kdl"        "$HOME/.config/zellij/layouts/main.kdl"
-cp "$REPO_DIR/zellij/scripts/mem.sh"          "$HOME/.config/zellij/scripts/mem.sh"
-chmod +x "$HOME/.config/zellij/scripts/mem.sh"
+roost arturcarvalho/debian-sandbox --pick zellij
 
 echo ">> Starship prompt"
 if have starship; then
