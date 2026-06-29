@@ -6,7 +6,7 @@ layout {
     pane size=1 borderless=true {
         plugin location="file:/home/artur/.config/zellij/plugins/zjstatus.wasm" {
             format_left  "{mode}{tabs}"
-            format_right "#[fg=#b8bb26,bg=#1d2021]  {command_host}  MEM {command_mem} "
+            format_right "#[fg=#b8bb26,bg=#1d2021]  {command_host} "
             format_space "#[bg=#1d2021]"
 
             mode_normal  "#[bg=#b8bb26,fg=#1d2021,bold]  N #[fg=#b8bb26,bg=#1d2021]"
@@ -25,11 +25,6 @@ layout {
             command_host_format     "{stdout}"
             command_host_interval   "1"
             command_host_rendermode "dynamic"
-
-            command_mem_command    "/home/artur/.config/zellij/scripts/mem.sh"
-            command_mem_format     "{stdout}"
-            command_mem_interval   "30"
-            command_mem_rendermode "dynamic"
         }
     }
 }
