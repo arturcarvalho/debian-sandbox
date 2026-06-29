@@ -146,16 +146,6 @@ have roborev || curl -fsSL https://roborev.io/install.sh | bash   # prebuilt, ch
 #   UNIT
 #   systemctl --user enable --now roborev
 
-echo ">> tmux-resurrect (save/restore sessions)"
-RESURRECT_DIR="$HOME/.tmux/plugins/tmux-resurrect"
-if [ -d "$RESURRECT_DIR" ]; then
-  echo "   ✓ tmux-resurrect present"
-else
-  git clone https://github.com/tmux-plugins/tmux-resurrect "$RESURRECT_DIR"
-fi
-grep -q 'tmux-resurrect' "$HOME/.tmux.conf" 2>/dev/null || \
-  echo "run '~/.tmux/plugins/tmux-resurrect/resurrect.tmux'" >> "$HOME/.tmux.conf"
-
 echo ">> zellij + zjstatus"
 ZELLIJ_VER="v0.44.1"
 ZJSTATUS_VER="v0.23.0"
