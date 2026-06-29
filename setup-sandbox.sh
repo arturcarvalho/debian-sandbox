@@ -171,9 +171,9 @@ mkdir -p "$HOME/.config/zellij/plugins" "$HOME/.config/zellij/layouts"
   curl -fsSL "https://github.com/dj95/zjstatus/releases/download/${ZJSTATUS_VER}/zjstatus.wasm" \
     -o "$HOME/.config/zellij/plugins/zjstatus.wasm"
 mkdir -p "$HOME/.config/zellij/layouts" "$HOME/.config/zellij/scripts"
-cp "$REPO_DIR/ai-config/zellij/config.kdl"              "$HOME/.config/zellij/config.kdl"
-cp "$REPO_DIR/ai-config/zellij/layouts/main.kdl"        "$HOME/.config/zellij/layouts/main.kdl"
-cp "$REPO_DIR/ai-config/zellij/scripts/mem.sh"          "$HOME/.config/zellij/scripts/mem.sh"
+cp "$REPO_DIR/zellij/config.kdl"              "$HOME/.config/zellij/config.kdl"
+cp "$REPO_DIR/zellij/layouts/main.kdl"        "$HOME/.config/zellij/layouts/main.kdl"
+cp "$REPO_DIR/zellij/scripts/mem.sh"          "$HOME/.config/zellij/scripts/mem.sh"
 chmod +x "$HOME/.config/zellij/scripts/mem.sh"
 
 echo ">> Starship prompt"
