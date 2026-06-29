@@ -1,6 +1,12 @@
 mouse_mode true
 default_layout "default"
 
+keybinds {
+    normal {
+        unbind "Alt Left" "Alt Right" "Alt Up" "Alt Down"
+    }
+}
+
 theme "gruvbox-dark-hard"
 
 themes {
