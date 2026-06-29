@@ -15,6 +15,13 @@ config.window_decorations = 'RESIZE'  -- no title bar, keeps resize borders
 config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = false
+config.show_new_tab_button_in_tab_bar = false
+
+wezterm.on('format-tab-title', function(tab)
+  local title = tab.active_pane.title
+  local name = title:match('([^/]+)$') or title
+  return ' ' .. name .. ' '
+end)
 
 -- Gruvbox Dark Hard
 config.colors = {
