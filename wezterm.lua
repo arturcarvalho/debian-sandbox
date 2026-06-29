@@ -18,9 +18,7 @@ config.tab_bar_at_bottom = false
 config.show_new_tab_button_in_tab_bar = false
 
 wezterm.on('format-tab-title', function(tab)
-  local title = tab.active_pane.title
-  local name = title:match('([^/]+)$') or title
-  return ' ' .. name .. ' '
+  return ' ⌘ ' .. (tab.tab_index + 1) .. ' '
 end)
 
 -- Gruvbox Dark Hard
