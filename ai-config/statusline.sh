@@ -2,38 +2,33 @@
 input=$(cat)
 
 format_reset() {
-  local resets=$1
+  local resets=$1 fmt=${2:-%H:%M}
   [ -z "$resets" ] && return
-  date -d "@${resets}" '+%H:%M' 2>/dev/null
+  date -d "@${resets}" "+${fmt}" 2>/dev/null
 }
 
 minibar() {
-  local pct=$1 cells=4
-  local levels=("⣀" "⣄" "⣤" "⣦" "⣶" "⣷" "⣿")
+  local pct=$1 cells=10
   local bar=""
   for ((i=0; i<cells; i++)); do
-    local cell_start=$((i * 100 / cells))
-    local cell_end=$(((i + 1) * 100 / cells))
-    if [ "$pct" -ge "$cell_end" ]; then
-      bar+="⣿"
-    elif [ "$pct" -le "$cell_start" ]; then
-      bar+="⣀"
+    local cell_mid=$(( i * 100 / cells + 100 / cells / 2 ))
+    if [ "$pct" -ge "$cell_mid" ]; then
+      bar+=$'\e[38;5;214m•\e[0m'
     else
-      local idx=$(( (pct - cell_start) * 6 / (100 / cells) ))
-      bar+="${levels[$idx]}"
+      bar+=$'\e[38;5;238m•\e[0m'
     fi
   done
-  echo "$bar"
+  printf '%b' "$bar"
 }
 
 format_limit() {
-  local label=$1 used_pct=$2 resets_at=$3
+  local used_pct=$1 resets_at=$2 fmt=${3:-%H:%M}
   local remaining reset_in
   remaining=$(printf '%.0f' "$used_pct")
-  local str="${label}: $(minibar "$remaining")"
+  local str="$(minibar "$remaining")"
   if [ -n "$resets_at" ]; then
-    reset_in=$(format_reset "$resets_at")
-    [ -n "$reset_in" ] && str+=" ${reset_in}"
+    reset_in=$(format_reset "$resets_at" "$fmt")
+    [ -n "$reset_in" ] && str+=" →${reset_in}"
   fi
   echo "$str"
 }
@@ -42,11 +37,11 @@ parts=()
 
 five_used=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 five_resets=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
-[ -n "$five_used" ] && parts+=("$(format_limit "sess" "$five_used" "$five_resets")")
+[ -n "$five_used" ] && parts+=("$(format_limit "$five_used" "$five_resets")")
 
 week_used=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 week_resets=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
-[ -n "$week_used" ] && parts+=("$(format_limit "week" "$week_used" "$week_resets")")
+[ -n "$week_used" ] && parts+=("$(format_limit "$week_used" "$week_resets" "%a %H:%M")")
 
 
 if [ ${#parts[@]} -gt 0 ]; then
