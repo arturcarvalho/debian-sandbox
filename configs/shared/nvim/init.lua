@@ -31,7 +31,7 @@ require('lazy').setup({
     lazy = false,
     build = ':TSUpdate',
     config = function()
-      require('nvim-treesitter.install').ensure_installed({
+      require('nvim-treesitter').install({
         'lua', 'go', 'javascript', 'typescript', 'tsx',
         'html', 'css', 'json', 'yaml', 'markdown',
       })
