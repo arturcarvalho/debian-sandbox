@@ -29,12 +29,11 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter.configs').setup({
-        ensure_installed = { 'lua', 'go', 'javascript', 'typescript', 'tsx', 'html', 'css', 'json', 'yaml', 'markdown' },
-        highlight = { enable = true },
-      })
-    end,
+    main = 'nvim-treesitter.configs',
+    opts = {
+      ensure_installed = { 'lua', 'go', 'javascript', 'typescript', 'tsx', 'html', 'css', 'json', 'yaml', 'markdown' },
+      highlight = { enable = true },
+    },
   },
 
 
