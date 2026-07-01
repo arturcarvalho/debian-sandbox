@@ -23,3 +23,9 @@ vim.g.clipboard = {
   },
 }
 vim.opt.clipboard = 'unnamedplus'
+
+-- Treesitter highlighting via built-in API
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'lua', 'go', 'javascript', 'typescript', 'tsx', 'html', 'css', 'json', 'yaml', 'markdown' },
+  callback = function() vim.treesitter.start() end,
+})
