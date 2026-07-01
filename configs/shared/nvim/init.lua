@@ -25,15 +25,17 @@ require('lazy').setup({
     end,
   },
 
-  -- Treesitter
+  -- Treesitter (lazy = false required by plugin)
   {
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs',
-    opts = {
-      ensure_installed = { 'lua', 'go', 'javascript', 'typescript', 'tsx', 'html', 'css', 'json', 'yaml', 'markdown' },
-      highlight = { enable = true },
-    },
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        ensure_installed = { 'lua', 'go', 'javascript', 'typescript', 'tsx', 'html', 'css', 'json', 'yaml', 'markdown' },
+        highlight = { enable = true },
+      })
+    end,
   },
 
 
