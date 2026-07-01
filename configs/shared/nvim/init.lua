@@ -39,6 +39,15 @@ require('lazy').setup({
   },
 
 
+  -- File explorer
+  {
+    'stevearc/oil.nvim',
+    config = function()
+      require('oil').setup()
+      vim.keymap.set('n', '-', '<cmd>Oil<cr>', { desc = 'Open file explorer' })
+    end,
+  },
+
   -- Git signs in gutter
   {
     'lewis6991/gitsigns.nvim',
