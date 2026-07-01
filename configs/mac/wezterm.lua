@@ -10,6 +10,7 @@ config.window_background_opacity = 0.95
 
 -- Window chrome
 config.window_decorations = 'RESIZE'  -- no title bar, keeps resize borders
+config.native_macos_fullscreen_mode = true
 
 -- Tab bar
 config.use_fancy_tab_bar = false
