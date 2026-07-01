@@ -37,13 +37,6 @@ require('lazy').setup({
     end,
   },
 
-  -- LSP
-  {
-    'neovim/nvim-lspconfig',
-    config = function()
-      require('lspconfig').gopls.setup({})
-    end,
-  },
 
   -- Git signs in gutter
   {
@@ -58,3 +51,6 @@ require('lazy').setup({
     config = true,
   },
 })
+
+-- LSP (built-in since Neovim 0.11, no plugin needed)
+vim.lsp.enable('gopls')
