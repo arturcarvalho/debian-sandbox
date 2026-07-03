@@ -40,6 +40,7 @@ else
   sudo apt-get install -y nodejs
 fi
 have pnpm || sudo npm install -g pnpm
+have tree-sitter || sudo npm install -g tree-sitter-cli
 
 echo ">> Go (latest) + dev tooling (CLIs/TUIs, Neovim LSP)"
 GO_WANT="$(curl -fsSL 'https://go.dev/VERSION?m=text' | head -n1 | sed 's/^go//')"
