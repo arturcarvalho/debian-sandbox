@@ -39,6 +39,12 @@ require('lazy').setup({
   },
 
 
+  -- Markdown table alignment
+  {
+    'dhruvasagar/vim-table-mode',
+    ft = 'markdown',
+  },
+
   -- File explorer
   {
     'stevearc/oil.nvim',
