@@ -1,5 +1,5 @@
 mouse_mode true
-default_layout "default"
+default_layout "main"
 
 keybinds {
     normal {
